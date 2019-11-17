@@ -73,7 +73,6 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
             'Content-Type': 'application/json'
         };
         const method = 'POST';
-        console.log({ method, headers, body });
         fetch(`/api/v1/messages/`, { method, headers, body })
             .then(response => {
                 return response.json();

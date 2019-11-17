@@ -57,6 +57,24 @@ interface Props{
 const PostsList: React.FunctionComponent<Props> = (props: Props) => {
     const { message, replayFnc, isReplay } = props;
 
+    const messageDelete = () => {
+        const method = 'DELETE';
+        fetch(`/api/v1/messages/${message.id}`,
+            { method })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                return data;
+            })
+            .catch(err => {
+                console.log("err=" + err);
+                return {};
+            });
+        location.reload();
+    };
+
     return (
         <>
             <MessageContainer isReplay={isReplay}>
@@ -66,6 +84,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 )}
                 {message.body}
                 <Button onClick={() => replayFnc(message.id)}>返信</Button>
+                <Button onClick={messageDelete}>削除</Button>
             </MessageContainer>
         </>
     );

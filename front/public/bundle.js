@@ -42718,11 +42718,30 @@ const PostsList = props => {
     replayFnc,
     isReplay
   } = props;
+
+  const messageDelete = () => {
+    const method = 'DELETE';
+    fetch(`/api/v1/messages/${message.id}`, {
+      method
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      console.log(data);
+      return data;
+    }).catch(err => {
+      console.log("err=" + err);
+      return {};
+    });
+    location.reload();
+  };
+
   return React.createElement(React.Fragment, null, React.createElement(MessageContainer, {
     isReplay: isReplay
   }, React.createElement("p", null, message.id, ":"), message.parent_id != null && React.createElement(React.Fragment, null, message.parent_id, " >> ", React.createElement("br", null)), message.body, React.createElement(Button, {
     onClick: () => replayFnc(message.id)
-  }, "\u8FD4\u4FE1")));
+  }, "\u8FD4\u4FE1"), React.createElement(Button, {
+    onClick: messageDelete
+  }, "\u524A\u9664")));
 };
 
 exports.default = PostsList;
@@ -42831,11 +42850,6 @@ const MessageArea = props => {
       'Content-Type': 'application/json'
     };
     const method = 'POST';
-    console.log({
-      method,
-      headers,
-      body
-    });
     fetch(`/api/v1/messages/`, {
       method,
       headers,
