@@ -43110,6 +43110,149 @@ exports.default = Post;
 
 /***/ }),
 
+/***/ "./src/components/PostContent.tsx":
+/*!****************************************!*\
+  !*** ./src/components/PostContent.tsx ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+
+const MessageContainer = styled_components_1.default.div`
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    color: #4a4a4a;
+    display: block;
+    padding: 0.5rem;
+    margin-top: 10px;
+    > button {
+        margin-left: auto;
+    }
+    > input {
+        width: 400px;
+    }
+`;
+const Button = styled_components_1.default.button`
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    line-height: 1;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    top: 0;
+    transition: 0.2s all;
+    display: inherit;
+
+    &:hover {
+        top: -2px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    &:active {
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        top: 0;
+    }
+`;
+
+const PostsList = props => {
+  const {
+    post
+  } = props;
+  const [opneChanger, setOpneChanger] = React.useState(false);
+  const [reName, setRename] = React.useState('');
+
+  const postDelete = () => {
+    const method = 'DELETE';
+    fetch(`/api/v1/posts/${post.id}`, {
+      method
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      console.log(data);
+      location.reload();
+      return data;
+    }).catch(err => {
+      console.log("err=" + err);
+      return {};
+    });
+  };
+
+  const postUpdate = () => {
+    const method = 'PUT';
+    const obj = {
+      title: reName
+    };
+    const body = JSON.stringify(obj);
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    fetch(`/api/v1/posts/${post.id}`, {
+      method,
+      headers,
+      body
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      location.reload();
+      return data;
+    }).catch(err => {
+      console.log("err=" + err);
+      return {};
+    });
+  };
+
+  const onChangeText = event => {
+    if (event.target.value.length <= 1000) {
+      setRename(event.target.value);
+    }
+  };
+
+  return React.createElement(React.Fragment, null, React.createElement(MessageContainer, null, post.title, React.createElement(Button, {
+    onClick: () => {}
+  }, "\u524A\u9664"), React.createElement(Button, {
+    onClick: e => {
+      setOpneChanger(!opneChanger);
+    }
+  }, "\u5909\u66F4"), opneChanger && React.createElement(React.Fragment, null, React.createElement("input", {
+    type: "text",
+    onChange: onChangeText
+  }), React.createElement("button", {
+    onClick: postUpdate
+  }, "\u66F4\u65B0"))));
+};
+
+exports.default = PostsList;
+
+/***/ }),
+
 /***/ "./src/components/PostsList.tsx":
 /*!**************************************!*\
   !*** ./src/components/PostsList.tsx ***!
@@ -43140,21 +43283,15 @@ Object.defineProperty(exports, "__esModule", {
 
 const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
 const NewPost_1 = __importDefault(__webpack_require__(/*! ./NewPost */ "./src/components/NewPost.tsx"));
 
-const MessageContainer = styled_components_1.default.div`
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    color: #4a4a4a;
-    display: block;
-    padding: 0.5rem;
+const PostContent_1 = __importDefault(__webpack_require__(/*! ./PostContent */ "./src/components/PostContent.tsx"));
+
+const Content = styled_components_1.default.div`
     max-width: 800px;
-    margin: 0.5rem auto 0 auto;
+    margin: 0 auto;
 `;
 
 const PostsList = () => {
@@ -43175,11 +43312,10 @@ const PostsList = () => {
 
   const [postsList, setPostsList] = React.useState(getPosts);
   const [isLoadong, setIsLoading] = React.useState(true);
-  return React.createElement(React.Fragment, null, !isLoadong && postsList.data.map((element, i) => React.createElement(MessageContainer, {
-    key: i
-  }, React.createElement(react_router_dom_1.Link, {
-    to: `/post/${element.id}`
-  }, element.title))), React.createElement(NewPost_1.default, null));
+  return React.createElement(React.Fragment, null, React.createElement(Content, null, !isLoadong && postsList.data.map((element, i) => React.createElement(PostContent_1.default, {
+    key: i,
+    post: element
+  }))), React.createElement(NewPost_1.default, null));
 };
 
 exports.default = PostsList;
