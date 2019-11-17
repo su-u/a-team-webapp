@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const HeaderComponent = () => {
     return (
         <>
             <Header>
-                <Title>掲示板</Title>
+                <Title><Link to={`/`}>掲示板</Link></Title>
             </Header>
         </>
     );
@@ -24,6 +25,11 @@ const Title = styled.div`
     padding-left: 30px;
     padding-top: 10px;
     font-size: 30px;
+    > a {
+        text-decoration: none;
+        color: white;
+    }
+
 `;
 
 export default HeaderComponent;

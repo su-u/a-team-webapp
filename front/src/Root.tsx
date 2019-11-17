@@ -8,8 +8,8 @@ import { HashRouter, Route } from 'react-router-dom'
 export default () => (
   <>
     <GlobalStyle />
-    <Header />
     <HashRouter>
+      <Header />
       <Route exact path='/' component={App} />
       <Route path='/post/:id' component={Post} />
     </HashRouter>

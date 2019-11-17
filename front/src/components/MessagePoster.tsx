@@ -56,13 +56,37 @@ const SubmitButton = styled.button`
 interface Props {
     postId: number;
     parentId: number | null;
+    reset: () => void;
 }
 
 
 const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
-    const { parentId } = props;
+    const { parentId, postId, reset } = props;
     const [textValue, setTextValue] = React.useState('');
     const [postAvailable, setPostAvailable] = React.useState(false);
+
+    const post = (textValue: string, postId: number, parentId: number | null) => {
+        const obj = { body: textValue, post_id: postId, parent_id: parentId };
+        const body = JSON.stringify(obj);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        const method = 'POST';
+        console.log({ method, headers, body });
+        fetch(`/api/v1/messages/`, { method, headers, body })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                return data;
+            })
+            .catch(err => {
+                console.log("err=" + err);
+                return {};
+            });
+    };
 
     const onChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (event.target.value.length <= 1000) {
@@ -77,7 +101,7 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
     ) => {
         event.preventDefault();
 
-        console.log(parentId);
+        post(textValue, postId, parentId);
         setTextValue('');
         setPostAvailable(false);
     };
@@ -88,7 +112,7 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                 <h2>入力欄</h2>
                 {parentId != null &&
                     (<>
-                    <p>to: {parentId}</p>
+                    <p>返信先: {parentId}</p>
                     </>
                     )
                 }
@@ -98,6 +122,10 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                     maxLength={1000}
                 />
                 <div>
+                    <SubmitButton onClick={reset}>
+                        返信先リセット
+                    </SubmitButton>
+                    
                     <SubmitButton onClick={onSubmit} disabled={!postAvailable}>
                         投稿
                     </SubmitButton>
