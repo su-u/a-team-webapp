@@ -43142,6 +43142,8 @@ const React = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 const MessageContainer = styled_components_1.default.div`
     background-color: white;
     border-radius: 6px;
@@ -43235,7 +43237,9 @@ const PostsList = props => {
     }
   };
 
-  return React.createElement(React.Fragment, null, React.createElement(MessageContainer, null, post.title, React.createElement(Button, {
+  return React.createElement(React.Fragment, null, React.createElement(MessageContainer, null, React.createElement(react_router_dom_1.Link, {
+    to: `/post/${post.id}`
+  }, post.title), React.createElement(Button, {
     onClick: () => {}
   }, "\u524A\u9664"), React.createElement(Button, {
     onClick: e => {
