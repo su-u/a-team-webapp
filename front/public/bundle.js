@@ -42894,6 +42894,85 @@ exports.default = MessageArea;
 
 /***/ }),
 
+/***/ "./src/components/NewPost.tsx":
+/*!************************************!*\
+  !*** ./src/components/NewPost.tsx ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+
+const Container = styled_components_1.default.div`
+    max-width: 800px;
+    margin: 20px auto 0 auto;
+    > input {
+        width: 400px;
+    }
+`;
+
+const NewPost = () => {
+  const [postName, setPostName] = react_1.default.useState('');
+
+  const onChangeText = event => {
+    if (event.target.value.length <= 1000) {
+      setPostName(event.target.value);
+    }
+  };
+
+  const createPost = () => {
+    const obj = {
+      title: postName
+    };
+    const body = JSON.stringify(obj);
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    const method = 'POST';
+    fetch(`/api/v1/posts/`, {
+      method,
+      headers,
+      body
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      location.reload();
+      return data;
+    }).catch(err => {
+      console.log("err=" + err);
+      return {};
+    });
+    setPostName('');
+  };
+
+  return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement(Container, null, react_1.default.createElement("input", {
+    type: "text",
+    onChange: onChangeText
+  }), react_1.default.createElement("button", {
+    onClick: createPost
+  }, "\u4F5C\u6210")));
+};
+
+exports.default = NewPost;
+
+/***/ }),
+
 /***/ "./src/components/Post.tsx":
 /*!*********************************!*\
   !*** ./src/components/Post.tsx ***!
@@ -43065,6 +43144,8 @@ const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_m
 
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
+const NewPost_1 = __importDefault(__webpack_require__(/*! ./NewPost */ "./src/components/NewPost.tsx"));
+
 const MessageContainer = styled_components_1.default.div`
     background-color: white;
     border-radius: 6px;
@@ -43098,7 +43179,7 @@ const PostsList = () => {
     key: i
   }, React.createElement(react_router_dom_1.Link, {
     to: `/post/${element.id}`
-  }, element.title))));
+  }, element.title))), React.createElement(NewPost_1.default, null));
 };
 
 exports.default = PostsList;

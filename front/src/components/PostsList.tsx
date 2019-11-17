@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import postType from '../types/postType';
+import NewPost from './NewPost';
 
 const MessageContainer = styled.div`
     background-color: white;
@@ -46,6 +47,7 @@ const PostsList: React.FunctionComponent<{}> = () => {
                     </MessageContainer>
                 ))
             )}
+            <NewPost />
         </>
         );
 }
