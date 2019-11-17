@@ -42786,7 +42786,7 @@ const InputForm = styled_components_1.default.form`
     background-color: white;
     border-radius: 6px;
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    margin: 50px auto 0 auto;
+    margin: 50px auto 20px auto;
     text-align: center;
     padding: 10px;
 
@@ -42802,7 +42802,6 @@ const InputArea = styled_components_1.default.textarea`
     width: 70%;
     height: 100px;
     margin: 0 auto;
-
     padding: 5px;
     border-bottom: 1px solid #ccc;
 `;
@@ -42869,6 +42868,12 @@ const MessageArea = props => {
     if (event.target.value.length <= 1000) {
       setTextValue(event.target.value);
     }
+
+    if (event.target.value.length <= 0) {
+      setPostAvailable(false);
+    } else {
+      setPostAvailable(true);
+    }
   };
 
   const onSubmit = event => {
@@ -42886,7 +42891,8 @@ const MessageArea = props => {
     onClick: reset,
     disabled: parentId == null
   }, "\u8FD4\u4FE1\u5148\u30EA\u30BB\u30C3\u30C8"), React.createElement(SubmitButton, {
-    onClick: onSubmit
+    onClick: onSubmit,
+    disabled: !postAvailable
   }, "\u6295\u7A3F"))));
 };
 

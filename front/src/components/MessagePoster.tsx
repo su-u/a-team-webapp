@@ -8,7 +8,7 @@ const InputForm = styled.form`
     background-color: white;
     border-radius: 6px;
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    margin: 50px auto 0 auto;
+    margin: 50px auto 20px auto;
     text-align: center;
     padding: 10px;
 
@@ -25,7 +25,6 @@ const InputArea = styled.textarea`
     width: 70%;
     height: 100px;
     margin: 0 auto;
-
     padding: 5px;
     border-bottom: 1px solid #ccc;
 `;
@@ -91,6 +90,11 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
         if (event.target.value.length <= 1000) {
             setTextValue(event.target.value);
         }
+        if (event.target.value.length <= 0) {
+            setPostAvailable(false);
+        } else {
+            setPostAvailable(true);
+        }
     };
 
     const onSubmit = (
@@ -123,7 +127,7 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                         返信先リセット
                     </SubmitButton>
                     
-                    <SubmitButton onClick={onSubmit}>
+                    <SubmitButton onClick={onSubmit} disabled={!postAvailable}>
                         投稿
                     </SubmitButton>
                 </div>

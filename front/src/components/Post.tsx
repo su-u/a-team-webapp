@@ -79,6 +79,7 @@ const Post: React.FunctionComponent<Props> = (props: Props) => {
             return {};
         });
     }
+
     const [messageList, setMessageList] = React.useState(getPosts);
     const [toReplay, setToReplay] = React.useState(null);
 
