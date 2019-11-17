@@ -23,6 +23,7 @@ module Api
       end
 
       def destroy
+        Message.where(post_id: params[:id]).delete_all
         @post.destroy
         render json: { status: 'SUCCESS', message: 'Deleted the post', data: @post }
       end
@@ -36,7 +37,6 @@ module Api
       end
 
       private
-
       def set_post
         @post = Post.find(params[:id])
       end

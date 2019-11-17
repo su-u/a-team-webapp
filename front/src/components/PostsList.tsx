@@ -1,22 +1,15 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import postsType from '../types/postsType';
+import postType from '../types/postType';
+import NewPost from './NewPost';
+import PostContent from './PostContent';
 
-const MessageContainer = styled.div`
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    color: #4a4a4a;
-    display: block;
-    padding: 0.5rem;
+const Content = styled.div`
     max-width: 800px;
-    margin: 0.5rem auto 0 auto;
+    margin: 0 auto;
 `;
-
 const PostsList: React.FunctionComponent<{}> = () => {
     const getPosts = () => {
-        console.log('p');
         fetch("/api/v1/posts/", {
             method: "GET",
         })
@@ -40,13 +33,14 @@ const PostsList: React.FunctionComponent<{}> = () => {
 
     return (
         <>
+            <Content>
             {!isLoadong && (
-                postsList.data.map((element: postsType, i: number) => (
-                    <MessageContainer key={i} >
-                        <Link to={`/post/${element.id}`}>{element.title}</Link>
-                    </MessageContainer>
+                postsList.data.map((element: postType, i: number) => (
+                    <PostContent key={i} post={element}></PostContent>
                 ))
-            )}
+                )}
+            </Content>
+            <NewPost />
         </>
         );
 }

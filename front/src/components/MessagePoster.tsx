@@ -8,7 +8,7 @@ const InputForm = styled.form`
     background-color: white;
     border-radius: 6px;
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    margin: 50px auto 0 auto;
+    margin: 50px auto 20px auto;
     text-align: center;
     padding: 10px;
 
@@ -25,7 +25,6 @@ const InputArea = styled.textarea`
     width: 70%;
     height: 100px;
     margin: 0 auto;
-
     padding: 5px;
     border-bottom: 1px solid #ccc;
 `;
@@ -54,20 +53,48 @@ const SubmitButton = styled.button`
 `;
 
 interface Props {
-    id: number;
+    postId: number;
+    parentId: number | null;
+    reset: () => void;
 }
 
 
 const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
+    const { parentId, postId, reset } = props;
     const [textValue, setTextValue] = React.useState('');
     const [postAvailable, setPostAvailable] = React.useState(false);
+
+    const post = (textValue: string, postId: number, parentId: number | null) => {
+        const obj = { body: textValue, post_id: postId, parent_id: parentId };
+        const body = JSON.stringify(obj);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        const method = 'POST';
+        fetch(`/api/v1/messages/`, { method, headers, body })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                location.reload();
+                return data;
+            })
+            .catch(err => {
+                console.log("err=" + err);
+                return {};
+            });
+    };
 
     const onChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (event.target.value.length <= 1000) {
             setTextValue(event.target.value);
         }
-        const e = event.target.value.length >= 5;
-        setPostAvailable(e);
+        if (event.target.value.length <= 0) {
+            setPostAvailable(false);
+        } else {
+            setPostAvailable(true);
+        }
     };
 
     const onSubmit = (
@@ -75,21 +102,31 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
     ) => {
         event.preventDefault();
 
+        post(textValue, postId, parentId);
         setTextValue('');
         setPostAvailable(false);
-
     };
 
     return (
         <>
             <InputForm>
                 <h2>入力欄</h2>
+                {parentId != null &&
+                    (<>
+                    <p>返信先: {parentId}</p>
+                    </>
+                    )
+                }
                 <InputArea
                     value={textValue}
                     onChange={onChangeText}
                     maxLength={1000}
                 />
                 <div>
+                    <SubmitButton onClick={reset} disabled={parentId==null}>
+                        返信先リセット
+                    </SubmitButton>
+                    
                     <SubmitButton onClick={onSubmit} disabled={!postAvailable}>
                         投稿
                     </SubmitButton>
