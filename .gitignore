@@ -376,3 +376,5 @@ doc/
 .DS_Store
 .idea
 .secret
+bundle.js
+bundle.js.map
