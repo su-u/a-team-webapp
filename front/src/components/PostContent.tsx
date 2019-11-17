@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
-import messageType from '../types/messageType';
 import postType from '../types/postType';
 
 const MessageContainer = styled.div`
@@ -106,8 +105,8 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 <Link to={`/post/${post.id}`}>
                     {post.title}
                 </Link>
-                <Button onClick={() => { }}>削除</Button>
-                <Button onClick={(e) => {setOpneChanger(!opneChanger)}}>変更</Button>
+                <Button onClick={() => postDelete()}>削除</Button>
+                <Button onClick={() => { setOpneChanger(!opneChanger) }}>変更</Button>
                 {opneChanger && (
                     <>
                         <input type="text" onChange={onChangeText}></input>

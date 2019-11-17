@@ -43240,9 +43240,9 @@ const PostsList = props => {
   return React.createElement(React.Fragment, null, React.createElement(MessageContainer, null, React.createElement(react_router_dom_1.Link, {
     to: `/post/${post.id}`
   }, post.title), React.createElement(Button, {
-    onClick: () => {}
+    onClick: () => postDelete()
   }, "\u524A\u9664"), React.createElement(Button, {
-    onClick: e => {
+    onClick: () => {
       setOpneChanger(!opneChanger);
     }
   }, "\u5909\u66F4"), opneChanger && React.createElement(React.Fragment, null, React.createElement("input", {
