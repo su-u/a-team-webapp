@@ -23,19 +23,19 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
         fetch(`/api/v1/posts/${id}`, {
             method: "GET",
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                const d = data;
-                console.log(d);
-                setMessageList(d);
-                setIsLoading(false);
-            })
-            .catch(function (err1) {
-                console.log("err=" + err1);
-                return {};
-            });
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            const d = data;
+            console.log(d);
+            setMessageList(d);
+            setIsLoading(false);
+        })
+        .catch(err => {
+            console.log("err=" + err);
+            return {};
+        });
     }
 
     const [messageList, setMessageList] = React.useState(getPosts);

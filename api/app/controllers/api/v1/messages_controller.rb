@@ -3,7 +3,7 @@ module Api
     class MessagesController < ApplicationController
         before_action :set_param, only: [:update, :destroy]
         def create
-            message = Message.new(params.require(:message).permit(:post_id, :body))
+            message = Message.new(message_params)
             if message.save
             render json: { status: 'SUCCESS', data: message }
             else
@@ -19,7 +19,7 @@ module Api
 
 
         def update
-        if @message.update(params.require(:message).permit(:body))
+        if @message.update(message_params)
           render json: { status: 'SUCCESS', message: 'Updated the post', data: @message }
         else
           render json: { status: 'SUCCESS', message: 'Not updated', data: @message.errors }
@@ -29,6 +29,9 @@ module Api
       private
      def set_param
         @message = Message.find(params[:id])
+      end
+      def message_params
+        params.require(:message).permit(:post_id, :body, :parent_id)
       end
 
     end
