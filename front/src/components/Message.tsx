@@ -66,13 +66,13 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
             })
             .then(data => {
                 console.log(data);
+                location.reload();
                 return data;
             })
             .catch(err => {
                 console.log("err=" + err);
                 return {};
             });
-        location.reload();
     };
 
     return (

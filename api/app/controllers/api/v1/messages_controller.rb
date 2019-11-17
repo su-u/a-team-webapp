@@ -12,7 +12,8 @@ module Api
         end
 
       def destroy
-        
+        # replayMessages = Message.where(parent_id: params[:id])
+        # replayMessages.destroy
         @message.destroy
         render json: { status: 'SUCCESS', message: 'Deleted the post', data: @message }
       end

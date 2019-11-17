@@ -78,7 +78,7 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                location.reload();
                 return data;
             })
             .catch(err => {
@@ -91,8 +91,6 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
         if (event.target.value.length <= 1000) {
             setTextValue(event.target.value);
         }
-        const e = event.target.value.length >= 5;
-        setPostAvailable(e);
     };
 
     const onSubmit = (
@@ -121,11 +119,11 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                     maxLength={1000}
                 />
                 <div>
-                    <SubmitButton onClick={reset}>
+                    <SubmitButton onClick={reset} disabled={parentId==null}>
                         返信先リセット
                     </SubmitButton>
                     
-                    <SubmitButton onClick={onSubmit} disabled={!postAvailable}>
+                    <SubmitButton onClick={onSubmit}>
                         投稿
                     </SubmitButton>
                 </div>

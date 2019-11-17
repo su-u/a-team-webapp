@@ -42727,12 +42727,12 @@ const PostsList = props => {
       return response.json();
     }).then(data => {
       console.log(data);
+      location.reload();
       return data;
     }).catch(err => {
       console.log("err=" + err);
       return {};
     });
-    location.reload();
   };
 
   return React.createElement(React.Fragment, null, React.createElement(MessageContainer, {
@@ -42857,7 +42857,7 @@ const MessageArea = props => {
     }).then(response => {
       return response.json();
     }).then(data => {
-      console.log(data);
+      location.reload();
       return data;
     }).catch(err => {
       console.log("err=" + err);
@@ -42869,9 +42869,6 @@ const MessageArea = props => {
     if (event.target.value.length <= 1000) {
       setTextValue(event.target.value);
     }
-
-    const e = event.target.value.length >= 5;
-    setPostAvailable(e);
   };
 
   const onSubmit = event => {
@@ -42886,10 +42883,10 @@ const MessageArea = props => {
     onChange: onChangeText,
     maxLength: 1000
   }), React.createElement("div", null, React.createElement(SubmitButton, {
-    onClick: reset
+    onClick: reset,
+    disabled: parentId == null
   }, "\u8FD4\u4FE1\u5148\u30EA\u30BB\u30C3\u30C8"), React.createElement(SubmitButton, {
-    onClick: onSubmit,
-    disabled: !postAvailable
+    onClick: onSubmit
   }, "\u6295\u7A3F"))));
 };
 
