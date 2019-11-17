@@ -54,11 +54,13 @@ const SubmitButton = styled.button`
 `;
 
 interface Props {
-    id: number;
+    postId: number;
+    parentId: number | null;
 }
 
 
 const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
+    const { parentId } = props;
     const [textValue, setTextValue] = React.useState('');
     const [postAvailable, setPostAvailable] = React.useState(false);
 
@@ -75,15 +77,21 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
     ) => {
         event.preventDefault();
 
+        console.log(parentId);
         setTextValue('');
         setPostAvailable(false);
-
     };
 
     return (
         <>
             <InputForm>
                 <h2>入力欄</h2>
+                {parentId != null &&
+                    (<>
+                    <p>to: {parentId}</p>
+                    </>
+                    )
+                }
                 <InputArea
                     value={textValue}
                     onChange={onChangeText}

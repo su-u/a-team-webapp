@@ -11,18 +11,53 @@ const MessageContainer = styled.div`
     padding: 0.5rem;
     max-width: 800px;
     margin: 0.5rem auto 0 auto;
+    > button {
+        margin-left: auto;
+    }
+    > span {
+        margin-right: 10px;
+    }
+`;
+
+const Button = styled.button`
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    line-height: 1;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    top: 0;
+    transition: 0.2s all;
+    display: inherit;
+
+    &:hover {
+        top: -2px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    &:active {
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        top: 0;
+    }
 `;
 
 interface Props{
     message: messageType;
+    replayFnc: (ParentId: number) => void;
 }
 
 const PostsList: React.FunctionComponent<Props> = (props: Props) => {
-    const { message } = props;
+    const { message, replayFnc } = props;
 
     return (
         <>
-            <div>message.body</div>
+            <MessageContainer>
+                <span>{message.id}:</span>
+                {message.body}
+                <Button onClick={() => replayFnc(message.id)}>返信</Button>
+            </MessageContainer>
         </>
     );
 }

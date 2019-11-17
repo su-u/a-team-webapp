@@ -39546,6 +39546,92 @@ exports.default = HeaderComponent;
 
 /***/ }),
 
+/***/ "./src/components/Message.tsx":
+/*!************************************!*\
+  !*** ./src/components/Message.tsx ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+
+const MessageContainer = styled_components_1.default.div`
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    color: #4a4a4a;
+    display: block;
+    padding: 0.5rem;
+    max-width: 800px;
+    margin: 0.5rem auto 0 auto;
+    > button {
+        margin-left: auto;
+    }
+    > span {
+        margin-right: 10px;
+    }
+`;
+const Button = styled_components_1.default.button`
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    line-height: 1;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    top: 0;
+    transition: 0.2s all;
+    display: inherit;
+
+    &:hover {
+        top: -2px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    &:active {
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        top: 0;
+    }
+`;
+
+const PostsList = props => {
+  const {
+    message,
+    replayFnc
+  } = props;
+  return React.createElement(React.Fragment, null, React.createElement(MessageContainer, null, React.createElement("span", null, message.id, ":"), message.body, React.createElement(Button, {
+    onClick: () => replayFnc(message.id)
+  }, "\u8FD4\u4FE1")));
+};
+
+exports.default = PostsList;
+
+/***/ }),
+
 /***/ "./src/components/MessagePoster.tsx":
 /*!******************************************!*\
   !*** ./src/components/MessagePoster.tsx ***!
@@ -39628,6 +39714,9 @@ const SubmitButton = styled_components_1.default.button`
 `;
 
 const MessageArea = props => {
+  const {
+    parentId
+  } = props;
   const [textValue, setTextValue] = React.useState('');
   const [postAvailable, setPostAvailable] = React.useState(false);
 
@@ -39642,11 +39731,12 @@ const MessageArea = props => {
 
   const onSubmit = event => {
     event.preventDefault();
+    console.log(parentId);
     setTextValue('');
     setPostAvailable(false);
   };
 
-  return React.createElement(React.Fragment, null, React.createElement(InputForm, null, React.createElement("h2", null, "\u5165\u529B\u6B04"), React.createElement(InputArea, {
+  return React.createElement(React.Fragment, null, React.createElement(InputForm, null, React.createElement("h2", null, "\u5165\u529B\u6B04"), parentId != null && React.createElement(React.Fragment, null, React.createElement("p", null, "to: ", parentId)), React.createElement(InputArea, {
     value: textValue,
     onChange: onChangeText,
     maxLength: 1000
@@ -39682,53 +39772,59 @@ Object.defineProperty(exports, "__esModule", {
 
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
-
 const MessagePoster_1 = __importDefault(__webpack_require__(/*! ./MessagePoster */ "./src/components/MessagePoster.tsx"));
 
-const MessageContainer = styled_components_1.default.div`
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    color: #4a4a4a;
-    display: block;
-    padding: 0.5rem;
-    max-width: 800px;
-    margin: 0.5rem auto 0 auto;
-`;
+const Message_1 = __importDefault(__webpack_require__(/*! ./Message */ "./src/components/Message.tsx"));
 
-const PostsList = props => {
+const Post = props => {
   const {
     id
   } = props.match.params;
 
+  const initList = messages => {
+    let list = [];
+    messages.map((element, i) => list.push(react_1.default.createElement(Message_1.default, {
+      key: i,
+      message: element,
+      replayFnc: n => replay(n)
+    })));
+    return list;
+  };
+
   const getPosts = () => {
-    console.log('p');
     fetch(`/api/v1/posts/${id}`, {
       method: "GET"
-    }).then(function (response) {
+    }).then(response => {
       return response.json();
-    }).then(function (data) {
-      const d = data;
-      console.log(d);
-      setMessageList(d);
+    }).then(data => {
+      console.log(data);
+      setMessageList(data.messages);
+      setDisplayList(initList(data.messages));
       setIsLoading(false);
-    }).catch(function (err1) {
-      console.log("err=" + err1);
+      console.log(messageList);
+      return data;
+    }).catch(err => {
+      console.log("err=" + err);
       return {};
     });
   };
 
   const [messageList, setMessageList] = react_1.default.useState(getPosts);
+  const [toReplay, setToReplay] = react_1.default.useState(0);
+
+  const replay = (ParentId, list) => {
+    setToReplay(ParentId);
+  };
+
+  const [displayList, setDisplayList] = react_1.default.useState([]);
   const [isLoadong, setIsLoading] = react_1.default.useState(true);
-  return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement("h1", null, "\u30E1\u30C3\u30BB\u30FC\u30B8\u30EA\u30B9\u30C8"), !isLoadong && messageList.messages.map((element, i) => react_1.default.createElement(MessageContainer, {
-    key: i
-  }, element.body)), react_1.default.createElement(MessagePoster_1.default, {
-    id: id
+  return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement("h1", null, "\u30E1\u30C3\u30BB\u30FC\u30B8\u30EA\u30B9\u30C8"), !isLoadong && displayList, react_1.default.createElement(MessagePoster_1.default, {
+    postId: id,
+    parentId: toReplay
   }));
 };
 
-exports.default = PostsList;
+exports.default = Post;
 
 /***/ }),
 
@@ -39779,7 +39875,6 @@ const MessageContainer = styled_components_1.default.div`
 
 const PostsList = () => {
   const getPosts = () => {
-    console.log('p');
     fetch("/api/v1/posts/", {
       method: "GET"
     }).then(function (response) {
