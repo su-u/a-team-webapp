@@ -35,7 +35,7 @@ const NewPost: React.FunctionComponent<{}> = () => {
                 return data;
             })
             .catch(err => {
-                console.log('err=' + err);
+                console.warn('err=' + err);
                 return {};
             });
         setPostName('');

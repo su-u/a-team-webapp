@@ -63,12 +63,11 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 location.reload();
                 return data;
             })
             .catch(err => {
-                console.log('err=' + err);
+                console.warn('err=' + err);
                 return {};
             });
     };

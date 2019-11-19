@@ -18,12 +18,11 @@ const PostsList: React.FunctionComponent<{}> = () => {
             })
             .then(function(data) {
                 const d = data;
-                console.log(d);
                 setPostsList(d);
                 setIsLoading(false);
             })
             .catch(function(err1) {
-                console.log('err=' + err1);
+                console.warn('err=' + err1);
             });
     };
 
@@ -34,6 +33,7 @@ const PostsList: React.FunctionComponent<{}> = () => {
         <>
             <Content>
                 {!isLoadong &&
+                    // @ts-ignore
                     postsList.data.map((element: postType, i: number) => (
                         <PostContent key={i} post={element}></PostContent>
                     ))}

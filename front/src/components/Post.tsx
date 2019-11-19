@@ -34,6 +34,7 @@ const Content = styled.div`
     margin: 0 auto;
 `;
 
+// @ts-ignore
 type Props = {} & RouteComponentProps<{ id: number }>;
 const Post: React.FunctionComponent<Props> = (props: Props) => {
     const { id } = props.match.params;
@@ -90,22 +91,24 @@ const Post: React.FunctionComponent<Props> = (props: Props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 setMessageList(data.messages);
+                // @ts-ignore
                 setDisplayList(initList(data.messages));
                 setIsLoading(false);
                 return data;
             })
             .catch(err => {
-                console.log('err=' + err);
+                console.warn('err=' + err);
                 return {};
             });
     };
 
+    // @ts-ignore
     const [messageList, setMessageList] = React.useState(getPosts);
     const [toReplay, setToReplay] = React.useState(null);
 
     const replay = (ParentId: number) => {
+        // @ts-ignore
         setToReplay(ParentId);
     };
 
