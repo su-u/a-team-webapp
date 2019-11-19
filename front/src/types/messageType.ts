@@ -5,5 +5,5 @@ type messageType = {
     parent_id: number | null;
     created_at: Date;
     updated_at: Date;
-}
+};
 export default messageType;

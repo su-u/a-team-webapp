@@ -9,7 +9,6 @@ const Container = styled.div`
     }
 `;
 
-
 const NewPost: React.FunctionComponent<{}> = () => {
     const [postName, setPostName] = React.useState('');
 
@@ -19,13 +18,12 @@ const NewPost: React.FunctionComponent<{}> = () => {
         }
     };
 
-
     const createPost = () => {
         const obj = { title: postName };
         const body = JSON.stringify(obj);
         const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
         };
         const method = 'POST';
         fetch(`/api/v1/posts/`, { method, headers, body })
@@ -37,11 +35,11 @@ const NewPost: React.FunctionComponent<{}> = () => {
                 return data;
             })
             .catch(err => {
-                console.log("err=" + err);
+                console.warn('err=' + err);
                 return {};
             });
         setPostName('');
-    }
+    };
 
     return (
         <>
@@ -51,6 +49,6 @@ const NewPost: React.FunctionComponent<{}> = () => {
             </Container>
         </>
     );
-}
+};
 
 export default NewPost;

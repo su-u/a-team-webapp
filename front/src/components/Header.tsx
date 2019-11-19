@@ -6,7 +6,9 @@ const HeaderComponent = () => {
     return (
         <>
             <Header>
-                <Title><Link to={`/`}>掲示板</Link></Title>
+                <Title>
+                    <Link to={`/`}>掲示板</Link>
+                </Title>
             </Header>
         </>
     );
@@ -29,7 +31,6 @@ const Title = styled.div`
         text-decoration: none;
         color: white;
     }
-
 `;
 
 export default HeaderComponent;

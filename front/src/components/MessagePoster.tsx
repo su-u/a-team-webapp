@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-
 const InputForm = styled.form`
     height: 100%;
     width: 80%;
@@ -58,18 +57,21 @@ interface Props {
     reset: () => void;
 }
 
-
 const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
     const { parentId, postId, reset } = props;
     const [textValue, setTextValue] = React.useState('');
     const [postAvailable, setPostAvailable] = React.useState(false);
 
-    const post = (textValue: string, postId: number, parentId: number | null) => {
+    const post = (
+        textValue: string,
+        postId: number,
+        parentId: number | null
+    ) => {
         const obj = { body: textValue, post_id: postId, parent_id: parentId };
         const body = JSON.stringify(obj);
         const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
         };
         const method = 'POST';
         fetch(`/api/v1/messages/`, { method, headers, body })
@@ -81,7 +83,7 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
                 return data;
             })
             .catch(err => {
-                console.log("err=" + err);
+                console.warn('err=' + err);
                 return {};
             });
     };
@@ -111,22 +113,21 @@ const MessageArea: React.FunctionComponent<Props> = (props: Props) => {
         <>
             <InputForm>
                 <h2>入力欄</h2>
-                {parentId != null &&
-                    (<>
-                    <p>返信先: {parentId}</p>
+                {parentId != null && (
+                    <>
+                        <p>返信先: {parentId}</p>
                     </>
-                    )
-                }
+                )}
                 <InputArea
                     value={textValue}
                     onChange={onChangeText}
                     maxLength={1000}
                 />
                 <div>
-                    <SubmitButton onClick={reset} disabled={parentId==null}>
+                    <SubmitButton onClick={reset} disabled={parentId == null}>
                         返信先リセット
                     </SubmitButton>
-                    
+
                     <SubmitButton onClick={onSubmit} disabled={!postAvailable}>
                         投稿
                     </SubmitButton>
