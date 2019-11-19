@@ -10,40 +10,37 @@ const Content = styled.div`
 `;
 const PostsList: React.FunctionComponent<{}> = () => {
     const getPosts = () => {
-        fetch("/api/v1/posts/", {
-            method: "GET",
+        fetch('/api/v1/posts/', {
+            method: 'GET',
         })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            const d = data;
-            console.log(d);
-            setPostsList(d);
-            setIsLoading(false);
-        })
-        .catch(function (err1) {
-            console.log("err=" + err1);
-        });
-    }
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                const d = data;
+                console.log(d);
+                setPostsList(d);
+                setIsLoading(false);
+            })
+            .catch(function(err1) {
+                console.log('err=' + err1);
+            });
+    };
 
     const [postsList, setPostsList] = React.useState(getPosts);
     const [isLoadong, setIsLoading] = React.useState(true);
 
-
     return (
         <>
             <Content>
-            {!isLoadong && (
-                postsList.data.map((element: postType, i: number) => (
-                    <PostContent key={i} post={element}></PostContent>
-                ))
-                )}
+                {!isLoadong &&
+                    postsList.data.map((element: postType, i: number) => (
+                        <PostContent key={i} post={element}></PostContent>
+                    ))}
             </Content>
             <NewPost />
         </>
-        );
-}
-
+    );
+};
 
 export default PostsList;

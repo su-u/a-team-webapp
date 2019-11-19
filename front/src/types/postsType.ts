@@ -6,5 +6,5 @@ type postsType = {
     message: string;
     data: postType;
     messages: messageType[];
-}
+};
 export default postsType;

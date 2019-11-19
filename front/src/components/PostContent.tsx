@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import postType from '../types/postType';
 
 const MessageContainer = styled.div`
@@ -18,7 +18,6 @@ const MessageContainer = styled.div`
         width: 400px;
     }
 `;
-
 
 const Button = styled.button`
     padding: 0.5rem 1rem;
@@ -55,8 +54,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
 
     const postDelete = () => {
         const method = 'DELETE';
-        fetch(`/api/v1/posts/${post.id}`,
-            { method })
+        fetch(`/api/v1/posts/${post.id}`, { method })
             .then(response => {
                 return response.json();
             })
@@ -66,7 +64,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 return data;
             })
             .catch(err => {
-                console.log("err=" + err);
+                console.log('err=' + err);
                 return {};
             });
     };
@@ -76,8 +74,8 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
         const obj = { title: reName };
         const body = JSON.stringify(obj);
         const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
         };
         fetch(`/api/v1/posts/${post.id}`, { method, headers, body })
             .then(response => {
@@ -88,7 +86,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 return data;
             })
             .catch(err => {
-                console.log("err=" + err);
+                console.log('err=' + err);
                 return {};
             });
     };
@@ -102,11 +100,15 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
     return (
         <>
             <MessageContainer>
-                <Link to={`/post/${post.id}`}>
-                    {post.title}
-                </Link>
+                <Link to={`/post/${post.id}`}>{post.title}</Link>
                 <Button onClick={() => postDelete()}>削除</Button>
-                <Button onClick={() => { setOpneChanger(!opneChanger) }}>変更</Button>
+                <Button
+                    onClick={() => {
+                        setOpneChanger(!opneChanger);
+                    }}
+                >
+                    変更
+                </Button>
                 {opneChanger && (
                     <>
                         <input type="text" onChange={onChangeText}></input>
@@ -116,7 +118,6 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
             </MessageContainer>
         </>
     );
-}
-
+};
 
 export default PostsList;

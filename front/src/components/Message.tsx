@@ -23,7 +23,6 @@ const MessageContainer = styled.div<{ isReplay: boolean }>`
     }
 `;
 
-
 const Button = styled.button`
     padding: 0.5rem 1rem;
     border: 1px solid #ddd;
@@ -48,7 +47,7 @@ const Button = styled.button`
     }
 `;
 
-interface Props{
+interface Props {
     message: messageType;
     replayFnc: (ParentId: number) => void;
     isReplay: boolean;
@@ -59,8 +58,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
 
     const messageDelete = () => {
         const method = 'DELETE';
-        fetch(`/api/v1/messages/${message.id}`,
-            { method })
+        fetch(`/api/v1/messages/${message.id}`, { method })
             .then(response => {
                 return response.json();
             })
@@ -70,7 +68,7 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
                 return data;
             })
             .catch(err => {
-                console.log("err=" + err);
+                console.log('err=' + err);
                 return {};
             });
     };
@@ -80,7 +78,9 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
             <MessageContainer isReplay={isReplay}>
                 <p>{message.id}:</p>
                 {message.parent_id != null && (
-                    <>{message.parent_id} >> <br /></>
+                    <>
+                        {message.parent_id} >> <br />
+                    </>
                 )}
                 {message.body}
                 <Button onClick={() => replayFnc(message.id)}>返信</Button>
@@ -88,7 +88,6 @@ const PostsList: React.FunctionComponent<Props> = (props: Props) => {
             </MessageContainer>
         </>
     );
-}
-
+};
 
 export default PostsList;
